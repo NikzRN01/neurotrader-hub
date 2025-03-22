@@ -5,11 +5,13 @@ import GlassCard from "@/components/ui/GlassCard";
 import { User, Mail, Lock, Settings, Upload, HelpCircle, LogOut, Edit, Phone, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "@/providers/ThemeProvider";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("settings");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { ThemeToggle } = useTheme();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -81,20 +83,6 @@ const Profile = () => {
       linkElement.click();
       linkElement.remove();
     }, 1500);
-  };
-
-  const toggleTheme = () => {
-    const html = document.documentElement;
-    const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    html.classList.remove(currentTheme);
-    html.classList.add(newTheme);
-    
-    toast({
-      title: `${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)} mode activated`,
-      description: `Theme has been changed to ${newTheme} mode`
-    });
   };
 
   return (
@@ -264,20 +252,7 @@ const Profile = () => {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-sm">Theme Mode</span>
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="darkMode"
-                            onChange={toggleTheme}
-                            defaultChecked
-                            className="peer h-5 w-9 appearance-none rounded-full bg-secondary transition-colors 
-                            checked:bg-primary checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                            after:h-4 after:w-4 after:rounded-full after:bg-gray-400 after:transition-all checked:after:bg-white"
-                          />
-                          <label htmlFor="darkMode" className="sr-only">
-                            Enable Dark Mode
-                          </label>
-                        </div>
+                        <ThemeToggle />
                       </div>
                     </div>
                   </div>

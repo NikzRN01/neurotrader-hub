@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { insightRecommendations } from "@/utils/mockData";
+import { useTheme } from "@/providers/ThemeProvider";
 
 const Navbar = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const Navbar = () => {
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const notificationsDropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { ThemeToggle } = useTheme();
 
   const navItems = [
     { path: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -97,6 +99,9 @@ const Navbar = () => {
 
         {/* User Actions */}
         <div className="flex items-center space-x-4">
+          {/* Theme Toggle */}
+          <ThemeToggle />
+          
           {/* Notifications */}
           <div className="relative" ref={notificationsDropdownRef}>
             <button 
