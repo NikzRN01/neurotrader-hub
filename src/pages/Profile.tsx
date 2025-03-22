@@ -1,10 +1,15 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
-import { User, Mail, Lock, Settings, Bell, CreditCard, LogOut, Edit, Wallet, UserPlus, Upload, HelpCircle } from "lucide-react";
+import { User, Mail, Lock, Settings, Upload, HelpCircle, LogOut, Edit, Phone, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("settings");
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -30,14 +35,67 @@ const Profile = () => {
 
   const profileItems = [
     { id: "settings", icon: Settings, label: "Account Settings" },
-    { id: "preference", icon: Bell, label: "Preferences" },
-    { id: "subscription", icon: CreditCard, label: "Subscription" },
-    { id: "watchlist", icon: Wallet, label: "Watchlist" },
-    { id: "invite", icon: UserPlus, label: "Invite Friends" },
+    { id: "preference", icon: Settings, label: "Preferences" },
     { id: "export", icon: Upload, label: "Export Data" },
     { id: "help", icon: HelpCircle, label: "Help & Support" },
     { id: "logout", icon: LogOut, label: "Log Out" },
   ];
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account"
+    });
+    navigate("/");
+  };
+
+  const handleExportData = (format: string) => {
+    toast({
+      title: "Data export initiated",
+      description: `Your data is being exported in ${format} format. Download will begin shortly.`
+    });
+    
+    // Mock download functionality
+    setTimeout(() => {
+      // In a real application, this would be a generated file from the server
+      const dummyData = {
+        portfolio: [
+          { asset: "AAPL", quantity: 10, value: 1750.45 },
+          { asset: "GOOGL", quantity: 5, value: 6532.50 },
+          { asset: "BTC", quantity: 0.5, value: 15275.80 },
+        ],
+        insights: [
+          { title: "Portfolio Diversification", score: 85 },
+          { title: "Risk Assessment", score: 65 },
+        ]
+      };
+      
+      const dataStr = JSON.stringify(dummyData, null, 2);
+      const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+      
+      const exportFileName = `neurotradex_export_${new Date().toISOString().slice(0, 10)}.json`;
+      
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileName);
+      linkElement.click();
+      linkElement.remove();
+    }, 1500);
+  };
+
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.classList.remove(currentTheme);
+    html.classList.add(newTheme);
+    
+    toast({
+      title: `${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)} mode activated`,
+      description: `Theme has been changed to ${newTheme} mode`
+    });
+  };
 
   return (
     <div className="min-h-screen p-6">
@@ -66,7 +124,7 @@ const Profile = () => {
                   {profileItems.map((item) => (
                     <li key={item.id}>
                       <button
-                        onClick={() => setActiveTab(item.id)}
+                        onClick={() => item.id === "logout" ? handleLogout() : setActiveTab(item.id)}
                         className={tabClass(item.id)}
                       >
                         <item.icon className="h-4 w-4" />
@@ -180,59 +238,6 @@ const Profile = () => {
                           />
                         </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">Two-Factor Authentication</span>
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="twoFactor"
-                            className="peer h-5 w-9 appearance-none rounded-full bg-secondary transition-colors 
-                            checked:bg-primary checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                            after:h-4 after:w-4 after:rounded-full after:bg-gray-400 after:transition-all checked:after:bg-white"
-                          />
-                          <label htmlFor="twoFactor" className="sr-only">
-                            Enable Two-Factor Authentication
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div>
-                    <h3 className="text-base font-medium">Investment Preferences</h3>
-                    <p className="text-sm text-muted-foreground">Set your investment goals and risk tolerance</p>
-                  </div>
-                  <div className="glass-panel rounded-lg p-4">
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Investment Goal</label>
-                        <select className="w-full bg-secondary py-2 px-4 rounded-lg text-sm">
-                          <option>Retirement Planning</option>
-                          <option>Wealth Accumulation</option>
-                          <option>Regular Income</option>
-                          <option>Short-term Goals</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Risk Tolerance</label>
-                        <select className="w-full bg-secondary py-2 px-4 rounded-lg text-sm">
-                          <option>Conservative</option>
-                          <option>Moderate</option>
-                          <option>Aggressive</option>
-                          <option>Very Aggressive</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Investment Timeline</label>
-                        <select className="w-full bg-secondary py-2 px-4 rounded-lg text-sm">
-                          <option>Less than 5 years</option>
-                          <option>5-10 years</option>
-                          <option>10-20 years</option>
-                          <option>More than 20 years</option>
-                        </select>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -245,92 +250,6 @@ const Profile = () => {
               <div className="space-y-6">
                 <div className="space-y-2">
                   <div>
-                    <h3 className="text-base font-medium">Notification Settings</h3>
-                    <p className="text-sm text-muted-foreground">Manage how we contact you</p>
-                  </div>
-                  <div className="glass-panel rounded-lg p-4">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-sm font-medium">Portfolio Alerts</p>
-                          <p className="text-xs text-muted-foreground">Price alerts, significant changes, etc.</p>
-                        </div>
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="portfolioAlerts"
-                            defaultChecked
-                            className="peer h-5 w-9 appearance-none rounded-full bg-secondary transition-colors 
-                            checked:bg-primary checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                            after:h-4 after:w-4 after:rounded-full after:bg-gray-400 after:transition-all checked:after:bg-white"
-                          />
-                          <label htmlFor="portfolioAlerts" className="sr-only">
-                            Enable Portfolio Alerts
-                          </label>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-sm font-medium">Market News</p>
-                          <p className="text-xs text-muted-foreground">Breaking news and market updates</p>
-                        </div>
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="marketNews"
-                            defaultChecked
-                            className="peer h-5 w-9 appearance-none rounded-full bg-secondary transition-colors 
-                            checked:bg-primary checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                            after:h-4 after:w-4 after:rounded-full after:bg-gray-400 after:transition-all checked:after:bg-white"
-                          />
-                          <label htmlFor="marketNews" className="sr-only">
-                            Enable Market News
-                          </label>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-sm font-medium">Educational Content</p>
-                          <p className="text-xs text-muted-foreground">New courses, webinars, and articles</p>
-                        </div>
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="educationalContent"
-                            className="peer h-5 w-9 appearance-none rounded-full bg-secondary transition-colors 
-                            checked:bg-primary checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                            after:h-4 after:w-4 after:rounded-full after:bg-gray-400 after:transition-all checked:after:bg-white"
-                          />
-                          <label htmlFor="educationalContent" className="sr-only">
-                            Enable Educational Content
-                          </label>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-sm font-medium">Product Updates</p>
-                          <p className="text-xs text-muted-foreground">New features and improvements</p>
-                        </div>
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="productUpdates"
-                            defaultChecked
-                            className="peer h-5 w-9 appearance-none rounded-full bg-secondary transition-colors 
-                            checked:bg-primary checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                            after:h-4 after:w-4 after:rounded-full after:bg-gray-400 after:transition-all checked:after:bg-white"
-                          />
-                          <label htmlFor="productUpdates" className="sr-only">
-                            Enable Product Updates
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div>
                     <h3 className="text-base font-medium">Display Settings</h3>
                     <p className="text-sm text-muted-foreground">Customize your dashboard view</p>
                   </div>
@@ -339,29 +258,17 @@ const Profile = () => {
                       <div>
                         <label className="block text-sm text-muted-foreground mb-1">Default Dashboard View</label>
                         <select className="w-full bg-secondary py-2 px-4 rounded-lg text-sm">
-                          <option>Portfolio Overview</option>
-                          <option>Market Summary</option>
+                          <option>Total Portfolio Value</option>
                           <option>Watchlist</option>
-                          <option>News Feed</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Chart Time Period</label>
-                        <select className="w-full bg-secondary py-2 px-4 rounded-lg text-sm">
-                          <option>1 Day</option>
-                          <option>1 Week</option>
-                          <option>1 Month</option>
-                          <option>3 Months</option>
-                          <option>1 Year</option>
-                          <option>5 Years</option>
                         </select>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm">Always Use Dark Mode</span>
+                        <span className="text-sm">Theme Mode</span>
                         <div className="relative">
                           <input
                             type="checkbox"
                             id="darkMode"
+                            onChange={toggleTheme}
                             defaultChecked
                             className="peer h-5 w-9 appearance-none rounded-full bg-secondary transition-colors 
                             checked:bg-primary checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
@@ -379,210 +286,121 @@ const Profile = () => {
             </GlassCard>
           )}
 
-          {activeTab === "subscription" && (
-            <GlassCard title="Subscription Plan">
+          {activeTab === "export" && (
+            <GlassCard title="Export Data">
               <div className="space-y-6">
                 <div className="glass-panel rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="inline-block px-2 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2">
-                        Current Plan
-                      </div>
-                      <h3 className="text-xl font-medium">Premium Plan</h3>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Access to all advanced features and real-time data
-                      </p>
+                  <div className="space-y-4">
+                    <p className="text-sm">
+                      Export your financial data in various formats. This includes your portfolio information, 
+                      transaction history, and AI-generated insights.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <button 
+                        className="rounded-lg bg-primary/10 py-2 text-primary hover:bg-primary/20 transition-colors"
+                        onClick={() => handleExportData('JSON')}
+                      >
+                        Export as JSON
+                      </button>
+                      <button 
+                        className="rounded-lg bg-primary/10 py-2 text-primary hover:bg-primary/20 transition-colors"
+                        onClick={() => handleExportData('CSV')}
+                      >
+                        Export as CSV
+                      </button>
+                      <button 
+                        className="rounded-lg bg-primary/10 py-2 text-primary hover:bg-primary/20 transition-colors"
+                        onClick={() => handleExportData('PDF')}
+                      >
+                        Export as PDF
+                      </button>
                     </div>
-                    <div className="text-right">
-                      <p className="text-2xl font-bold">$19.99</p>
-                      <p className="text-sm text-muted-foreground">per month</p>
+                    
+                    <div className="text-xs text-muted-foreground mt-2">
+                      <p>Data included in export:</p>
+                      <ul className="list-disc pl-5 mt-1 space-y-1">
+                        <li>Portfolio holdings and performance</li>
+                        <li>Transaction history</li>
+                        <li>AI investment insights</li>
+                        <li>Account settings</li>
+                      </ul>
                     </div>
-                  </div>
-                  <div className="mt-4 border-t border-border pt-4">
-                    <ul className="space-y-2">
-                      <li className="flex items-center gap-2 text-sm">
-                        <div className="h-4 w-4 rounded-full bg-success/20 flex items-center justify-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-3 w-3 text-success"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                        <span>Real-time market data</span>
-                      </li>
-                      <li className="flex items-center gap-2 text-sm">
-                        <div className="h-4 w-4 rounded-full bg-success/20 flex items-center justify-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-3 w-3 text-success"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                        <span>Advanced AI insights and recommendations</span>
-                      </li>
-                      <li className="flex items-center gap-2 text-sm">
-                        <div className="h-4 w-4 rounded-full bg-success/20 flex items-center justify-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-3 w-3 text-success"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                        <span>Unlimited watchlists and portfolio tracking</span>
-                      </li>
-                      <li className="flex items-center gap-2 text-sm">
-                        <div className="h-4 w-4 rounded-full bg-success/20 flex items-center justify-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-3 w-3 text-success"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                        <span>Access to premium educational content</span>
-                      </li>
-                      <li className="flex items-center gap-2 text-sm">
-                        <div className="h-4 w-4 rounded-full bg-success/20 flex items-center justify-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-3 w-3 text-success"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                        <span>Priority customer support</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="flex gap-3 mt-4">
-                    <button className="flex-1 rounded-lg bg-primary/10 py-2 text-primary hover:bg-primary/20 transition-colors text-sm">
-                      Manage Subscription
-                    </button>
-                    <button className="flex-1 rounded-lg bg-destructive/10 py-2 text-destructive hover:bg-destructive/20 transition-colors text-sm">
-                      Cancel Subscription
-                    </button>
                   </div>
                 </div>
+              </div>
+            </GlassCard>
+          )}
 
+          {activeTab === "help" && (
+            <GlassCard title="Help & Support">
+              <div className="space-y-6">
                 <div className="glass-panel rounded-lg p-4">
-                  <h3 className="text-lg font-medium mb-3">Billing Information</h3>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div>
-                      <label className="block text-sm text-muted-foreground mb-1">Card Number</label>
-                      <div className="relative">
-                        <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <input
-                          type="text"
-                          defaultValue="**** **** **** 4242"
-                          disabled
-                          className="w-full bg-secondary py-2 pl-10 pr-4 rounded-lg text-sm opacity-70"
-                        />
+                      <h3 className="text-base font-medium">Contact Information</h3>
+                      <div className="mt-3 space-y-3">
+                        <div className="flex items-start gap-3">
+                          <Mail className="h-5 w-5 text-primary mt-0.5" />
+                          <div>
+                            <p className="text-sm font-medium">Email Support</p>
+                            <a href="mailto:support@neurotradex.com" className="text-sm text-primary">
+                              support@neurotradex.com
+                            </a>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <Phone className="h-5 w-5 text-primary mt-0.5" />
+                          <div>
+                            <p className="text-sm font-medium">Phone Support</p>
+                            <a href="tel:+18001234567" className="text-sm text-primary">
+                              +1 (800) 123-4567
+                            </a>
+                            <p className="text-xs text-muted-foreground">
+                              Available Monday - Friday, 9am - 5pm EST
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <MapPin className="h-5 w-5 text-primary mt-0.5" />
+                          <div>
+                            <p className="text-sm font-medium">Company Address</p>
+                            <p className="text-sm">
+                              NeuroTradeX Inc.<br />
+                              123 Finance Street, Suite 456<br />
+                              New York, NY 10001<br />
+                              United States
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Expiry Date</label>
-                        <input
-                          type="text"
-                          defaultValue="09/24"
-                          disabled
-                          className="w-full bg-secondary py-2 px-4 rounded-lg text-sm opacity-70"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm text-muted-foreground mb-1">CVV</label>
-                        <input
-                          type="text"
-                          defaultValue="***"
-                          disabled
-                          className="w-full bg-secondary py-2 px-4 rounded-lg text-sm opacity-70"
-                        />
+                    
+                    <div className="border-t border-border pt-4">
+                      <h3 className="text-base font-medium">Frequently Asked Questions</h3>
+                      <div className="mt-3 space-y-3">
+                        <div>
+                          <p className="text-sm font-medium">How do I reset my password?</p>
+                          <p className="text-sm text-muted-foreground">
+                            Go to the Account Settings tab and select the Security section to change your password.
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">How can I export my portfolio data?</p>
+                          <p className="text-sm text-muted-foreground">
+                            Use the Export Data tab to download your portfolio information in various formats.
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">How are AI recommendations generated?</p>
+                          <p className="text-sm text-muted-foreground">
+                            Our AI analyzes market trends, your portfolio composition, and historical data to provide personalized investment insights.
+                          </p>
+                        </div>
                       </div>
                     </div>
-                    <button className="rounded-lg bg-secondary py-2 text-primary text-sm">
-                      Update Payment Method
-                    </button>
-                  </div>
-                </div>
-
-                <div className="glass-panel rounded-lg p-4">
-                  <h3 className="text-lg font-medium mb-3">Billing History</h3>
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-separate border-spacing-0">
-                      <thead>
-                        <tr>
-                          <th className="text-left pb-2 text-xs text-muted-foreground font-medium">Date</th>
-                          <th className="text-left pb-2 text-xs text-muted-foreground font-medium">Invoice</th>
-                          <th className="text-right pb-2 text-xs text-muted-foreground font-medium">Amount</th>
-                          <th className="text-right pb-2 text-xs text-muted-foreground font-medium">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="py-2 text-sm">Apr 01, 2023</td>
-                          <td className="py-2 text-sm text-primary">#INV-4219</td>
-                          <td className="py-2 text-sm text-right">$19.99</td>
-                          <td className="py-2 text-right">
-                            <span className="inline-block px-2 py-1 text-xs bg-success/20 text-success rounded-full">
-                              Paid
-                            </span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 text-sm">Mar 01, 2023</td>
-                          <td className="py-2 text-sm text-primary">#INV-4186</td>
-                          <td className="py-2 text-sm text-right">$19.99</td>
-                          <td className="py-2 text-right">
-                            <span className="inline-block px-2 py-1 text-xs bg-success/20 text-success rounded-full">
-                              Paid
-                            </span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 text-sm">Feb 01, 2023</td>
-                          <td className="py-2 text-sm text-primary">#INV-4152</td>
-                          <td className="py-2 text-sm text-right">$19.99</td>
-                          <td className="py-2 text-right">
-                            <span className="inline-block px-2 py-1 text-xs bg-success/20 text-success rounded-full">
-                              Paid
-                            </span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
                   </div>
                 </div>
               </div>
