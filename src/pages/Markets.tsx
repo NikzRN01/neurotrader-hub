@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Card from "@/components/ui/Card";
+import { Card } from "@/components/ui/card";
 import LineChart from "@/components/ui/LineChart";
 import { ArrowUpRight, ArrowDownRight, Search, Filter, ArrowRight } from "lucide-react";
 import { mockMarketData, sampleChartData, newsItems } from "@/utils/mockData";

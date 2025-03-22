@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import Card from "@/components/ui/Card";
+import { Card } from "@/components/ui/card";
 import LineChart from "@/components/ui/LineChart";
 import { ArrowRight, Calendar, TrendingUp, AlertCircle, BarChart3 } from "lucide-react";
 import { newsItems, insightRecommendations, sampleChartData } from "@/utils/mockData";

@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import Card from "@/components/ui/Card";
+import { Card } from "@/components/ui/card";
 import { ArrowRight, BookOpen, GraduationCap, Search, Clock, BarChart3, Megaphone } from "lucide-react";
 import { learningModules } from "@/utils/mockData";
 
