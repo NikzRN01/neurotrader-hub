@@ -1,19 +1,26 @@
 
 import { useState } from "react";
-import { ArrowUpRight, ArrowDownRight, TrendingUp, AlertCircle, Wallet } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, TrendingUp, AlertCircle } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import LineChart from "@/components/ui/LineChart";
 import { mockPortfolioData, sampleChartData } from "@/utils/mockData";
 
 const PortfolioOverview = () => {
-  const [selectedAccountType, setSelectedAccountType] = useState<string>("All");
+  const [selectedTimeRange, setSelectedTimeRange] = useState<string>("7 Days");
 
-  const accountTypeClass = (type: string) =>
+  const timeRangeClass = (range: string) =>
     `px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-      selectedAccountType === type
+      selectedTimeRange === range
         ? "bg-primary/10 text-primary"
         : "bg-secondary text-muted-foreground hover:bg-secondary/80"
     }`;
+
+  const investmentTypes = [
+    { name: "Stock Investments", value: 82500, growth: 4200, icon: "📈" },
+    { name: "Mutual Funds", value: 45000, growth: 1500, icon: "📊" },
+    { name: "Crypto Account", value: 15000, growth: -1200, icon: "🪙" },
+    { name: "Gold Investments", value: 7500, growth: 300, icon: "🪙" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -24,23 +31,6 @@ const PortfolioOverview = () => {
           <p className="text-sm text-muted-foreground">
             Last updated: {new Date().toLocaleDateString()}, {new Date().toLocaleTimeString()}
           </p>
-        </div>
-        <div className="flex gap-2">
-          <button
-            className={accountTypeClass("All")}
-            onClick={() => setSelectedAccountType("All")}
-          >
-            All Accounts
-          </button>
-          {mockPortfolioData.accountTypes.map((account) => (
-            <button
-              key={account.name}
-              className={accountTypeClass(account.name)}
-              onClick={() => setSelectedAccountType(account.name)}
-            >
-              {account.name}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -78,30 +68,51 @@ const PortfolioOverview = () => {
           </div>
         </div>
 
-        <LineChart data={sampleChartData} showTimeFrames={true} />
+        <div className="mb-4 flex gap-2 overflow-x-auto pb-2">
+          <button
+            className={timeRangeClass("7 Days")}
+            onClick={() => setSelectedTimeRange("7 Days")}
+          >
+            7 Days
+          </button>
+          <button
+            className={timeRangeClass("14 Days")}
+            onClick={() => setSelectedTimeRange("14 Days")}
+          >
+            14 Days
+          </button>
+          <button
+            className={timeRangeClass("30 Days")}
+            onClick={() => setSelectedTimeRange("30 Days")}
+          >
+            30 Days
+          </button>
+        </div>
+
+        <LineChart data={sampleChartData} showTimeFrames={false} />
       </GlassCard>
 
-      {/* Account Types */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {mockPortfolioData.accountTypes.map((account) => (
-          <GlassCard key={account.name} className="relative overflow-hidden">
+      {/* Investment Types */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+        {investmentTypes.map((investment, idx) => (
+          <GlassCard key={idx} className="relative overflow-hidden">
             <div className="mb-3 flex items-center gap-2">
-              <Wallet className="h-5 w-5 text-muted-foreground" />
-              <h3 className="font-medium">{account.name} Account</h3>
+              <div className="text-xl">{investment.icon}</div>
+              <h3 className="font-medium">{investment.name}</h3>
             </div>
             <div className="flex justify-between items-end">
               <div>
                 <p className="text-2xl font-bold">
-                  ${account.value.toLocaleString("en-US")}
+                  ${investment.value.toLocaleString("en-US")}
                 </p>
-                <div className={`flex items-center ${account.growth >= 0 ? 'text-success' : 'text-destructive'}`}>
-                  {account.growth >= 0 ? (
+                <div className={`flex items-center ${investment.growth >= 0 ? 'text-success' : 'text-destructive'}`}>
+                  {investment.growth >= 0 ? (
                     <ArrowUpRight className="h-4 w-4" />
                   ) : (
                     <ArrowDownRight className="h-4 w-4" />
                   )}
                   <span className="text-sm">
-                    ${Math.abs(account.growth).toLocaleString("en-US")}
+                    ${Math.abs(investment.growth).toLocaleString("en-US")}
                   </span>
                 </div>
               </div>

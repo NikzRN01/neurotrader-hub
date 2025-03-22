@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -6,12 +5,12 @@ import {
   BarChart3, 
   Globe, 
   Lightbulb, 
-  GraduationCap, 
   User,
   Search,
   BellRing,
   Menu,
-  X
+  X,
+  MessageSquare
 } from "lucide-react";
 
 const Navbar = () => {
@@ -24,7 +23,7 @@ const Navbar = () => {
     { path: "/portfolio", label: "Portfolio", icon: BarChart3 },
     { path: "/markets", label: "Markets", icon: Globe },
     { path: "/insights", label: "Insights", icon: Lightbulb },
-    { path: "/learn", label: "Learn", icon: GraduationCap },
+    { path: "/ai-chat", label: "AI Chat", icon: MessageSquare },
     { path: "/profile", label: "Profile", icon: User },
   ];
 

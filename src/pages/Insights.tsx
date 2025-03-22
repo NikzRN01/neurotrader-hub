@@ -1,11 +1,25 @@
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import LineChart from "@/components/ui/LineChart";
-import { ArrowRight, Calendar, TrendingUp, AlertCircle, BarChart3 } from "lucide-react";
-import { newsItems, insightRecommendations, sampleChartData } from "@/utils/mockData";
+import { ArrowRight, TrendingUp, AlertCircle, BarChart3, Send, Search } from "lucide-react";
+import { sampleChartData } from "@/utils/mockData";
 
 const Insights = () => {
+  const [userQuery, setUserQuery] = useState("");
+  const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [insightResults, setInsightResults] = useState<null | {
+    summary: string;
+    prediction: string;
+    recommendation: string;
+    riskLevel: string;
+    confidence: number;
+  }>(null);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -21,6 +35,33 @@ const Insights = () => {
     show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   };
 
+  const handleGenerateInsight = () => {
+    if (!userQuery.trim()) return;
+    
+    setLoading(true);
+    setSelectedInsight(userQuery);
+    
+    // Simulate API call with timeout
+    setTimeout(() => {
+      setInsightResults({
+        summary: `Analysis of ${userQuery} indicates strong growth potential in the next quarter based on recent earnings reports, technical indicators, and market sentiment.`,
+        prediction: "8-12% price increase over the next 60 days",
+        recommendation: "Consider increasing position by 2-3% of portfolio value",
+        riskLevel: "Medium",
+        confidence: 75
+      });
+      setLoading(false);
+    }, 2000);
+  };
+
+  const predefinedQueries = [
+    "AAPL stock outlook",
+    "Technology sector analysis",
+    "Emerging market opportunities",
+    "Dividend stocks performance",
+    "Interest rates impact on financials"
+  ];
+
   return (
     <div className="min-h-screen p-6">
       <motion.div
@@ -33,304 +74,199 @@ const Insights = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gradient">AI Insights</h1>
-              <p className="text-muted-foreground">AI-powered analysis tailored to your portfolio</p>
+              <p className="text-muted-foreground">Ask about any stock, sector, or market trend</p>
             </div>
           </div>
         </motion.div>
 
-        {/* Market Predictions */}
+        {/* Search Input */}
         <motion.div variants={itemVariants}>
-          <Card>
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/3">
-                <h3 className="text-lg font-medium mb-4">Market Predictions</h3>
-                <div className="space-y-3">
-                  <div className="glass-panel rounded-lg p-3">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="text-sm font-medium">Technology Sector Outlook</h4>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400">Bullish</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      AI advancements and cloud computing growth will likely drive tech stocks higher in the coming quarter.
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs bg-secondary px-1.5 py-0.5 rounded">90 Days</span>
-                      <div className="flex items-center gap-1">
-                        <TrendingUp className="h-3 w-3 text-success" />
-                        <span className="text-xs text-success">+8-12% predicted</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="glass-panel rounded-lg p-3">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="text-sm font-medium">Energy Sector Outlook</h4>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400">Neutral</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      Supply constraints balanced by reduced demand could keep energy stocks in a sideways pattern.
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs bg-secondary px-1.5 py-0.5 rounded">60 Days</span>
-                      <div className="flex items-center gap-1">
-                        <BarChart3 className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">-2% to +3% predicted</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="glass-panel rounded-lg p-3">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="text-sm font-medium">Financial Sector Outlook</h4>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-red-500/20 text-red-400">Bearish</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      Rising interest rates and potential loan defaults may pressure financial stocks in the near term.
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs bg-secondary px-1.5 py-0.5 rounded">30 Days</span>
-                      <div className="flex items-center gap-1">
-                        <TrendingUp className="h-3 w-3 text-destructive rotate-180" />
-                        <span className="text-xs text-destructive">-5-7% predicted</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          <Card className="p-6">
+            <div className="space-y-4">
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Enter a stock symbol, sector, or market trend..."
+                  value={userQuery}
+                  onChange={(e) => setUserQuery(e.target.value)}
+                  className="w-full pl-10"
+                  onKeyPress={(e) => e.key === "Enter" && handleGenerateInsight()}
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
               
-              <div className="md:w-2/3">
-                <h3 className="text-lg font-medium mb-4">Sector Performance Forecast</h3>
-                <LineChart data={sampleChartData} />
-                <div className="mt-4 flex justify-between items-center">
-                  <div className="text-sm text-muted-foreground">
-                    Projections based on market trends, economic indicators, and sentiment analysis
-                  </div>
-                  <button className="text-sm text-primary flex items-center gap-1">
-                    <span>View detailed analysis</span>
-                    <ArrowRight className="h-3 w-3" />
+              <div className="flex flex-wrap gap-2">
+                {predefinedQueries.map((query, index) => (
+                  <button
+                    key={index}
+                    className="px-3 py-1.5 text-xs font-medium rounded-full bg-secondary text-muted-foreground hover:bg-secondary/80 transition-colors"
+                    onClick={() => {
+                      setUserQuery(query);
+                      handleGenerateInsight();
+                    }}
+                  >
+                    {query}
                   </button>
-                </div>
+                ))}
               </div>
+              
+              <Button 
+                onClick={handleGenerateInsight} 
+                disabled={!userQuery.trim() || loading}
+                className="w-full"
+              >
+                {loading ? "Generating Insights..." : "Generate AI Insights"}
+              </Button>
             </div>
           </Card>
         </motion.div>
 
-        {/* Earnings Calendar and Recommendations */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card title="Upcoming Earnings">
-            <div className="space-y-3">
-              <div className="glass-panel rounded-lg p-3">
-                <div className="flex justify-between items-start">
+        {/* Analysis Results */}
+        {(loading || insightResults) && (
+          <motion.div 
+            variants={itemVariants}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Card className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-xl font-medium">{selectedInsight} Analysis</h2>
+                {!loading && (
+                  <div className={`px-2 py-1 rounded text-xs ${
+                    insightResults?.confidence && insightResults.confidence >= 75 ? 'bg-green-500/20 text-green-400' :
+                    insightResults?.confidence && insightResults.confidence >= 50 ? 'bg-amber-500/20 text-amber-400' :
+                    'bg-red-500/20 text-red-400'
+                  }`}>
+                    {insightResults?.confidence}% Confidence
+                  </div>
+                )}
+              </div>
+              
+              {loading ? (
+                <div className="space-y-4">
+                  <div className="h-20 glass-panel rounded-lg animate-pulse"></div>
+                  <div className="h-40 glass-panel rounded-lg animate-pulse"></div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="h-24 glass-panel rounded-lg animate-pulse"></div>
+                    <div className="h-24 glass-panel rounded-lg animate-pulse"></div>
+                    <div className="h-24 glass-panel rounded-lg animate-pulse"></div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="glass-panel rounded-lg p-4">
+                    <h3 className="text-sm font-medium mb-2">Summary</h3>
+                    <p className="text-sm text-muted-foreground">{insightResults?.summary}</p>
+                  </div>
+                  
                   <div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm font-medium">Google (GOOGL)</p>
+                    <h3 className="text-sm font-medium mb-3">Performance Projection</h3>
+                    <LineChart data={sampleChartData} height={250} />
+                    <div className="mt-2 flex justify-end">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <div className="h-3 w-3 bg-blue-500 rounded-full"></div>
+                        <span>Historical</span>
+                        <div className="h-3 w-3 bg-green-500 rounded-full ml-2"></div>
+                        <span>Projected</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Apr 30, 2023 | After Market Close</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Est. EPS</p>
-                    <p className="text-sm font-medium">$1.32</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="glass-panel rounded-lg p-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm font-medium">Apple (AAPL)</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="glass-panel rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                        <h3 className="text-sm font-medium">Prediction</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{insightResults?.prediction}</p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">May 2, 2023 | After Market Close</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Est. EPS</p>
-                    <p className="text-sm font-medium">$1.43</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="glass-panel rounded-lg p-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm font-medium">Microsoft (MSFT)</p>
+                    
+                    <div className="glass-panel rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                        <h3 className="text-sm font-medium">Recommendation</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{insightResults?.recommendation}</p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">May 5, 2023 | After Market Close</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Est. EPS</p>
-                    <p className="text-sm font-medium">$2.24</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="glass-panel rounded-lg p-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm font-medium">Amazon (AMZN)</p>
+                    
+                    <div className="glass-panel rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                        <h3 className="text-sm font-medium">Risk Assessment</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Risk Level: {insightResults?.riskLevel}</p>
+                      <div className="mt-2 glass-panel rounded-full h-2 bg-secondary overflow-hidden">
+                        <div 
+                          className={`h-full ${
+                            insightResults?.riskLevel === 'Low' ? 'bg-green-500' :
+                            insightResults?.riskLevel === 'Medium' ? 'bg-amber-500' :
+                            'bg-red-500'
+                          }`} 
+                          style={{ 
+                            width: insightResults?.riskLevel === 'Low' ? '30%' :
+                                   insightResults?.riskLevel === 'Medium' ? '60%' :
+                                   '90%' 
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">May 8, 2023 | After Market Close</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Est. EPS</p>
-                    <p className="text-sm font-medium">$0.35</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-3 text-center">
-              <button className="text-sm text-primary flex items-center justify-center gap-1 w-full">
-                <span>View full earnings calendar</span>
-                <ArrowRight className="h-3 w-3" />
-              </button>
-            </div>
-          </Card>
-          
-          <Card title="AI Recommendations">
-            <div className="space-y-3">
-              {insightRecommendations.map((rec) => (
-                <div key={rec.id} className="glass-panel rounded-lg p-3">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-sm font-medium">{rec.title}</h4>
-                    <span className={`text-xs px-1.5 py-0.5 rounded ${
-                      rec.impact === 'High' ? 'bg-red-500/20 text-red-400' : 
-                      rec.impact === 'Medium' ? 'bg-amber-500/20 text-amber-400' : 
-                      'bg-blue-500/20 text-blue-400'
-                    }`}>
-                      {rec.impact}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-2">{rec.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs bg-secondary px-1.5 py-0.5 rounded">{rec.type}</span>
-                    <button className="text-primary text-xs flex items-center gap-1">
-                      <span>Take action</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </button>
+                  
+                  <div className="flex justify-between">
+                    <Button variant="outline" onClick={() => setUserQuery("")}>
+                      New Analysis
+                    </Button>
+                    <Button className="flex items-center gap-1">
+                      <span>Save Analysis</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="mt-3 text-center">
-              <button className="text-sm text-primary flex items-center justify-center gap-1 w-full">
-                <span>View all recommendations</span>
-                <ArrowRight className="h-3 w-3" />
-              </button>
-            </div>
-          </Card>
-        </motion.div>
+              )}
+            </Card>
+          </motion.div>
+        )}
 
-        {/* Regulatory Alerts and Sentiment Analysis */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card title="Regulatory Alerts">
-            <div className="space-y-3">
-              <div className="flex justify-between items-start p-3 glass-panel rounded-lg">
-                <div className="flex items-start gap-2">
-                  <AlertCircle className="h-4 w-4 text-amber-400 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium">SEC Proposes New Disclosure Rules</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      The SEC has proposed new rules that would require companies to disclose climate-related risks. This may impact reporting requirements for companies in your portfolio.
-                    </p>
-                  </div>
+        {/* Related Insights */}
+        {insightResults && (
+          <motion.div 
+            variants={itemVariants}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            <Card className="p-6">
+              <h2 className="text-lg font-medium mb-4">Related Insights</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="glass-panel rounded-lg p-4">
+                  <h3 className="text-sm font-medium mb-2">Industry Comparison</h3>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    See how this investment compares to industry benchmarks and peers.
+                  </p>
+                  <Button variant="outline" size="sm" className="w-full">View Comparison</Button>
                 </div>
-                <button className="text-primary">
-                  <ArrowRight className="h-4 w-4" />
-                </button>
+                
+                <div className="glass-panel rounded-lg p-4">
+                  <h3 className="text-sm font-medium mb-2">News Sentiment</h3>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Analysis of recent news and social media sentiment towards this investment.
+                  </p>
+                  <Button variant="outline" size="sm" className="w-full">View Sentiment</Button>
+                </div>
+                
+                <div className="glass-panel rounded-lg p-4">
+                  <h3 className="text-sm font-medium mb-2">Historical Performance</h3>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Detailed breakdown of performance across different market conditions.
+                  </p>
+                  <Button variant="outline" size="sm" className="w-full">View History</Button>
+                </div>
               </div>
-
-              <div className="flex justify-between items-start p-3 glass-panel rounded-lg">
-                <div className="flex items-start gap-2">
-                  <AlertCircle className="h-4 w-4 text-amber-400 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium">Fed Rate Decision Upcoming</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      The Federal Reserve is expected to announce interest rate decisions on May 15. This could impact bond values and interest-sensitive stocks in your portfolio.
-                    </p>
-                  </div>
-                </div>
-                <button className="text-primary">
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </div>
-
-              <div className="flex justify-between items-start p-3 glass-panel rounded-lg">
-                <div className="flex items-start gap-2">
-                  <AlertCircle className="h-4 w-4 text-amber-400 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium">Tax Filing Deadline Approaching</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      The deadline for filing income tax returns is April 15. Consider reviewing your investment income and potential deductions.
-                    </p>
-                  </div>
-                </div>
-                <button className="text-primary">
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          </Card>
-          
-          <Card title="Sentiment Analysis">
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm">Apple Inc. (AAPL)</p>
-                  <span className="text-xs px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400">Positive</span>
-                </div>
-                <div className="glass-panel rounded-full h-2.5 bg-secondary overflow-hidden">
-                  <div className="bg-blue-500 h-full" style={{ width: "75%" }}></div>
-                </div>
-                <div className="flex justify-between mt-1">
-                  <span className="text-xs text-muted-foreground">Negative</span>
-                  <span className="text-xs text-muted-foreground">Positive</span>
-                </div>
-                <p className="text-xs mt-1 text-muted-foreground">Based on 1,243 news articles and 5,872 social media posts</p>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm">Tesla (TSLA)</p>
-                  <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400">Mixed</span>
-                </div>
-                <div className="glass-panel rounded-full h-2.5 bg-secondary overflow-hidden">
-                  <div className="bg-amber-500 h-full" style={{ width: "55%" }}></div>
-                </div>
-                <div className="flex justify-between mt-1">
-                  <span className="text-xs text-muted-foreground">Negative</span>
-                  <span className="text-xs text-muted-foreground">Positive</span>
-                </div>
-                <p className="text-xs mt-1 text-muted-foreground">Based on 987 news articles and 12,453 social media posts</p>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm">Netflix (NFLX)</p>
-                  <span className="text-xs px-1.5 py-0.5 rounded bg-red-500/20 text-red-400">Negative</span>
-                </div>
-                <div className="glass-panel rounded-full h-2.5 bg-secondary overflow-hidden">
-                  <div className="bg-red-500 h-full" style={{ width: "35%" }}></div>
-                </div>
-                <div className="flex justify-between mt-1">
-                  <span className="text-xs text-muted-foreground">Negative</span>
-                  <span className="text-xs text-muted-foreground">Positive</span>
-                </div>
-                <p className="text-xs mt-1 text-muted-foreground">Based on 765 news articles and 8,932 social media posts</p>
-              </div>
-            </div>
-            <div className="mt-3 text-center">
-              <button className="text-sm text-primary flex items-center justify-center gap-1 w-full">
-                <span>View detailed sentiment analysis</span>
-                <ArrowRight className="h-3 w-3" />
-              </button>
-            </div>
-          </Card>
-        </motion.div>
+            </Card>
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );

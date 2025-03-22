@@ -8,7 +8,7 @@ import { ArrowUpRight, ArrowDownRight, Filter, Download, Clock, Percent, DollarS
 import { mockPortfolioData, sampleChartData } from "@/utils/mockData";
 
 const Portfolio = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [selectedTimeRange, setSelectedTimeRange] = useState<string>("7 Days");
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -25,11 +25,11 @@ const Portfolio = () => {
     show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   };
 
-  const tabClass = (tab: string) =>
-    `px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-      activeTab === tab
-        ? "bg-secondary text-primary"
-        : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+  const timeRangeClass = (range: string) =>
+    `px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+      selectedTimeRange === range
+        ? "bg-primary/10 text-primary"
+        : "bg-secondary text-muted-foreground hover:bg-secondary/80"
     }`;
 
   return (
@@ -119,16 +119,28 @@ const Portfolio = () => {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-medium">Performance</h3>
-                  <div className="flex bg-secondary rounded-lg overflow-hidden">
-                    <button className={tabClass("overview")} onClick={() => setActiveTab("overview")}>
-                      Overview
+                  <div className="flex gap-2">
+                    <button
+                      className={timeRangeClass("7 Days")}
+                      onClick={() => setSelectedTimeRange("7 Days")}
+                    >
+                      7 Days
                     </button>
-                    <button className={tabClass("detailed")} onClick={() => setActiveTab("detailed")}>
-                      Detailed
+                    <button
+                      className={timeRangeClass("14 Days")}
+                      onClick={() => setSelectedTimeRange("14 Days")}
+                    >
+                      14 Days
+                    </button>
+                    <button
+                      className={timeRangeClass("30 Days")}
+                      onClick={() => setSelectedTimeRange("30 Days")}
+                    >
+                      30 Days
                     </button>
                   </div>
                 </div>
-                <LineChart data={sampleChartData} showTimeFrames={true} />
+                <LineChart data={sampleChartData} showTimeFrames={false} />
               </div>
             </div>
           </GlassCard>
@@ -137,7 +149,30 @@ const Portfolio = () => {
         {/* Asset Allocation and Top Holdings */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <GlassCard title="Asset Allocation">
-            <PieChart data={mockPortfolioData.assetAllocation} />
+            <div className="relative">
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-blue-500/5 blur-xl"></div>
+              <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-purple-500/5 blur-xl"></div>
+              <PieChart data={mockPortfolioData.assetAllocation} />
+              
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {mockPortfolioData.assetAllocation.map((category, idx) => (
+                  <motion.div 
+                    key={idx}
+                    className="flex items-center gap-2 p-2 rounded-lg hover:bg-secondary/30 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div 
+                      className="h-3 w-3 rounded-full" 
+                      style={{ backgroundColor: category.color }}
+                    ></div>
+                    <div className="flex flex-col">
+                      <span className="text-xs font-medium">{category.name}</span>
+                      <span className="text-[10px] text-muted-foreground">{category.value}%</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </GlassCard>
           
           <GlassCard title="Top Holdings">

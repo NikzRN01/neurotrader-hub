@@ -3,11 +3,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import LineChart from "@/components/ui/LineChart";
-import { ArrowUpRight, ArrowDownRight, Search, Filter, ArrowRight } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, ArrowRight } from "lucide-react";
 import { mockMarketData, sampleChartData, newsItems } from "@/utils/mockData";
 
 const Markets = () => {
-  const [activeMarketType, setActiveMarketType] = useState("stocks");
+  const [selectedTimeRange, setSelectedTimeRange] = useState<string>("7 Days");
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -24,9 +24,9 @@ const Markets = () => {
     show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   };
 
-  const marketTypeClass = (type: string) =>
-    `px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-      activeMarketType === type
+  const timeRangeClass = (range: string) =>
+    `px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+      selectedTimeRange === range
         ? "bg-primary/10 text-primary"
         : "bg-secondary text-muted-foreground hover:bg-secondary/80"
     }`;
@@ -44,54 +44,6 @@ const Markets = () => {
             <h1 className="text-3xl font-bold text-gradient">Markets</h1>
             <p className="text-muted-foreground">Track global market trends and discover opportunities</p>
           </div>
-          <div className="flex gap-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search markets..."
-                className="input-search pl-10 w-64"
-              />
-            </div>
-            <button className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/80 transition-colors">
-              <Filter className="h-4 w-4" />
-              <span className="text-sm">Filter</span>
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Market Types */}
-        <motion.div variants={itemVariants} className="flex gap-2 overflow-x-auto pb-2">
-          <button
-            className={marketTypeClass("stocks")}
-            onClick={() => setActiveMarketType("stocks")}
-          >
-            Stocks
-          </button>
-          <button
-            className={marketTypeClass("indices")}
-            onClick={() => setActiveMarketType("indices")}
-          >
-            Indices
-          </button>
-          <button
-            className={marketTypeClass("crypto")}
-            onClick={() => setActiveMarketType("crypto")}
-          >
-            Cryptocurrencies
-          </button>
-          <button
-            className={marketTypeClass("forex")}
-            onClick={() => setActiveMarketType("forex")}
-          >
-            Forex
-          </button>
-          <button
-            className={marketTypeClass("commodities")}
-            onClick={() => setActiveMarketType("commodities")}
-          >
-            Commodities
-          </button>
         </motion.div>
 
         {/* Market Overview */}
@@ -119,6 +71,30 @@ const Markets = () => {
                 ))}
               </div>
 
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-medium">Performance</h3>
+                <div className="flex gap-2">
+                  <button
+                    className={timeRangeClass("7 Days")}
+                    onClick={() => setSelectedTimeRange("7 Days")}
+                  >
+                    7 Days
+                  </button>
+                  <button
+                    className={timeRangeClass("14 Days")}
+                    onClick={() => setSelectedTimeRange("14 Days")}
+                  >
+                    14 Days
+                  </button>
+                  <button
+                    className={timeRangeClass("30 Days")}
+                    onClick={() => setSelectedTimeRange("30 Days")}
+                  >
+                    30 Days
+                  </button>
+                </div>
+              </div>
+
               <LineChart data={sampleChartData} />
             </div>
           </Card>
@@ -126,10 +102,10 @@ const Markets = () => {
 
         {/* Trending Stocks and News */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card title="Trending Stocks">
+          <Card title="Trending Stocks" className="p-6">
             <div className="space-y-4">
               {mockMarketData.trendingStocks.map((stock, index) => (
-                <div key={index} className="flex justify-between items-center">
+                <div key={index} className="flex justify-between items-center p-2 hover:bg-secondary/20 rounded-lg transition-colors">
                   <div>
                     <div className="flex items-center gap-2">
                       <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
@@ -158,17 +134,21 @@ const Markets = () => {
                   </div>
                 </div>
               ))}
-              <button className="w-full text-center text-sm text-primary flex items-center justify-center gap-1">
-                <span>View all trending stocks</span>
-                <ArrowRight className="h-3 w-3" />
-              </button>
             </div>
           </Card>
           
-          <Card title="Market News">
+          <Card title="Market News" className="p-6">
             <div className="space-y-4">
               {newsItems.map((news) => (
-                <div key={news.id} className="flex justify-between items-start border-b border-border/30 pb-3 last:border-0 last:pb-0">
+                <a 
+                  key={news.id}
+                  href="#"
+                  className="flex justify-between items-start border-b border-border/30 pb-3 last:border-0 last:pb-0 hover:bg-secondary/20 p-2 rounded-lg transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open('https://finance.yahoo.com', '_blank');
+                  }}
+                >
                   <div>
                     <h4 className="text-sm font-medium">{news.title}</h4>
                     <div className="mt-1 flex items-center text-xs text-muted-foreground">
@@ -182,12 +162,8 @@ const Markets = () => {
                   <button className="text-primary">
                     <ArrowRight className="h-4 w-4" />
                   </button>
-                </div>
+                </a>
               ))}
-              <button className="w-full text-center text-sm text-primary flex items-center justify-center gap-1">
-                <span>View all news</span>
-                <ArrowRight className="h-3 w-3" />
-              </button>
             </div>
           </Card>
         </motion.div>
@@ -214,16 +190,6 @@ const Markets = () => {
                     <option>10 - 20</option>
                     <option>20 - 50</option>
                     <option>&gt; 50</option>
-                  </select>
-                </div>
-                <div className="flex-1">
-                  <label className="block text-xs text-muted-foreground mb-1">Sector</label>
-                  <select className="w-full bg-secondary rounded-lg px-3 py-2 text-sm">
-                    <option>Any</option>
-                    <option>Technology</option>
-                    <option>Healthcare</option>
-                    <option>Financials</option>
-                    <option>Consumer Discretionary</option>
                   </select>
                 </div>
                 <div className="flex-1">
