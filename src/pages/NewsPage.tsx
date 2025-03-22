@@ -99,7 +99,9 @@ const NewsPage = () => {
                 >
                   <div className="flex-1">
                     <h3 className="text-base font-medium mb-1">{news.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-2">{news.description || "Latest financial news and market updates from trusted sources."}</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {"Latest financial news and market updates from trusted sources."}
+                    </p>
                     <div className="flex items-center text-xs text-muted-foreground">
                       <span>{news.source}</span>
                       <span className="mx-1.5">•</span>

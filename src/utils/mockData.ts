@@ -115,6 +115,7 @@ export const newsItems = [
   {
     id: 1,
     title: 'Federal Reserve Maintains Interest Rates, Signals Potential Cuts',
+    description: 'The Federal Reserve has decided to maintain current interest rates while signaling potential future cuts based on economic indicators.',
     source: 'Financial Times',
     time: '2 hours ago',
     category: 'Economy'
@@ -122,6 +123,7 @@ export const newsItems = [
   {
     id: 2,
     title: 'Tech Stocks Rally as AI Optimism Continues to Grow',
+    description: 'Technology stocks are experiencing a significant rally as investors show increased optimism about artificial intelligence developments.',
     source: 'Bloomberg',
     time: '4 hours ago',
     category: 'Technology'
@@ -129,6 +131,7 @@ export const newsItems = [
   {
     id: 3,
     title: 'NVIDIA Announces New AI Chips, Stock Surges 5%',
+    description: 'NVIDIA has unveiled its next generation of AI processing chips, causing a 5% surge in its stock price as markets react positively.',
     source: 'CNBC',
     time: '6 hours ago',
     category: 'Technology'
@@ -136,6 +139,7 @@ export const newsItems = [
   {
     id: 4,
     title: 'Oil Prices Drop Amid Global Supply Concerns',
+    description: 'Global oil prices have decreased as concerns about supply chains and production levels impact market sentiment.',
     source: 'Reuters',
     time: '8 hours ago',
     category: 'Commodities'
@@ -143,6 +147,7 @@ export const newsItems = [
   {
     id: 5,
     title: 'Indian Markets Hit All-Time High as Foreign Investments Surge',
+    description: 'Indian stock markets have reached record highs as foreign investments continue to flow into the country\'s growing economy.',
     source: 'Economic Times',
     time: '9 hours ago',
     category: 'Markets'

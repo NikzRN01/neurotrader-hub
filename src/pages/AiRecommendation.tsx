@@ -14,8 +14,8 @@ const AiRecommendation = () => {
   const [userQuestion, setUserQuestion] = useState("");
   const [conversation, setConversation] = useState<{ role: "ai" | "user"; content: string; }[]>([]);
 
-  // Find the recommendation by ID
-  const recommendation = insightRecommendations.find(rec => rec.id === id) || {
+  // Find the recommendation by ID - convert id to string for proper comparison
+  const recommendation = insightRecommendations.find(rec => rec.id.toString() === id) || {
     id: "unknown",
     title: "Unknown Recommendation",
     description: "Recommendation details not found",
