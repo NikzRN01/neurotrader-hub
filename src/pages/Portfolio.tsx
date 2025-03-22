@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Card from "@/components/ui/Card";
+import GlassCard from "@/components/ui/GlassCard";
 import LineChart from "@/components/ui/LineChart";
 import PieChart from "@/components/ui/PieChart";
 import { ArrowUpRight, ArrowDownRight, Filter, Download, Clock, Percent, DollarSign, BarChart3 } from "lucide-react";
@@ -59,7 +59,7 @@ const Portfolio = () => {
 
         {/* Portfolio Summary */}
         <motion.div variants={itemVariants}>
-          <Card>
+          <GlassCard>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-lg font-medium mb-4">Portfolio Summary</h3>
@@ -131,16 +131,16 @@ const Portfolio = () => {
                 <LineChart data={sampleChartData} showTimeFrames={true} />
               </div>
             </div>
-          </Card>
+          </GlassCard>
         </motion.div>
 
         {/* Asset Allocation and Top Holdings */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card title="Asset Allocation">
+          <GlassCard title="Asset Allocation">
             <PieChart data={mockPortfolioData.assetAllocation} />
-          </Card>
+          </GlassCard>
           
-          <Card title="Top Holdings">
+          <GlassCard title="Top Holdings">
             <div className="space-y-4">
               {mockPortfolioData.topHoldings.map((holding, index) => (
                 <div key={index} className="flex justify-between items-center">
@@ -173,12 +173,12 @@ const Portfolio = () => {
                 </div>
               ))}
             </div>
-          </Card>
+          </GlassCard>
         </motion.div>
 
         {/* Performance Metrics */}
         <motion.div variants={itemVariants}>
-          <Card title="Performance Metrics">
+          <GlassCard title="Performance Metrics">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="glass-panel rounded-lg p-3">
                 <p className="text-sm text-muted-foreground">CAGR</p>
@@ -201,12 +201,12 @@ const Portfolio = () => {
                 <p className="text-xs text-muted-foreground">Above Average</p>
               </div>
             </div>
-          </Card>
+          </GlassCard>
         </motion.div>
 
         {/* Upcoming Dividends */}
         <motion.div variants={itemVariants}>
-          <Card title="Upcoming Dividends">
+          <GlassCard title="Upcoming Dividends">
             <div className="space-y-3">
               <div className="flex justify-between items-center bg-secondary/40 rounded-lg p-3">
                 <div>
@@ -239,7 +239,7 @@ const Portfolio = () => {
                 </div>
               </div>
             </div>
-          </Card>
+          </GlassCard>
         </motion.div>
       </motion.div>
     </div>

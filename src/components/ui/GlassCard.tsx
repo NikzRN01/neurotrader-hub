@@ -10,7 +10,7 @@ interface CardProps {
   centerTitle?: boolean;
 }
 
-const Card = ({ children, title, className = "", hoverable = true, centerTitle = false }: CardProps) => {
+const GlassCard = ({ children, title, className = "", hoverable = true, centerTitle = false }: CardProps) => {
   return (
     <motion.div
       whileHover={hoverable ? { y: -5, transition: { duration: 0.2 } } : {}}
@@ -26,4 +26,4 @@ const Card = ({ children, title, className = "", hoverable = true, centerTitle =
   );
 };
 
-export default Card;
+export default GlassCard;

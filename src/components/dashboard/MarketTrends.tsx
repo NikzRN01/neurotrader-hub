@@ -1,11 +1,11 @@
 
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
-import Card from "@/components/ui/Card";
+import GlassCard from "@/components/ui/GlassCard";
 import { mockMarketData } from "@/utils/mockData";
 
 const MarketTrends = () => {
   return (
-    <Card title="Market Trends" className="h-full">
+    <GlassCard title="Market Trends" className="h-full">
       <div className="space-y-6">
         <div>
           <h4 className="mb-3 text-sm font-medium text-muted-foreground">Major Indices</h4>
@@ -62,7 +62,7 @@ const MarketTrends = () => {
           </div>
         </div>
       </div>
-    </Card>
+    </GlassCard>
   );
 };
 

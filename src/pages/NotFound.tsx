@@ -2,7 +2,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import Card from "@/components/ui/Card";
+import GlassCard from "@/components/ui/GlassCard";
 import { Home, AlertTriangle } from "lucide-react";
 
 const NotFound = () => {
@@ -22,7 +22,7 @@ const NotFound = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="w-full max-w-md mx-auto text-center py-10 px-6">
+        <GlassCard className="w-full max-w-md mx-auto text-center py-10 px-6">
           <div className="mb-6 flex justify-center">
             <div className="h-20 w-20 rounded-full bg-destructive/10 flex items-center justify-center">
               <AlertTriangle className="h-10 w-10 text-destructive" />
@@ -40,7 +40,7 @@ const NotFound = () => {
             <Home className="h-4 w-4" />
             <span>Return to Dashboard</span>
           </Link>
-        </Card>
+        </GlassCard>
       </motion.div>
     </div>
   );

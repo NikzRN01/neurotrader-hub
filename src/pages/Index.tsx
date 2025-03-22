@@ -4,7 +4,7 @@ import PortfolioOverview from "@/components/dashboard/PortfolioOverview";
 import AssetAllocation from "@/components/dashboard/AssetAllocation";
 import TopHoldings from "@/components/dashboard/TopHoldings";
 import MarketTrends from "@/components/dashboard/MarketTrends";
-import Card from "@/components/ui/Card";
+import GlassCard from "@/components/ui/GlassCard";
 import { newsItems, insightRecommendations } from "@/utils/mockData";
 import { ArrowRight, TrendingUp, BriefcaseBusiness, ShieldCheck } from "lucide-react";
 
@@ -52,7 +52,7 @@ const Dashboard = () => {
         <motion.div variants={itemVariants}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
-              <Card title="Latest Financial News">
+              <GlassCard title="Latest Financial News">
                 <div className="space-y-4">
                   {newsItems.slice(0, 3).map((news) => (
                     <div key={news.id} className="flex justify-between items-start border-b border-border/30 pb-3 last:border-0 last:pb-0">
@@ -78,11 +78,11 @@ const Dashboard = () => {
                     <ArrowRight className="h-3 w-3" />
                   </button>
                 </div>
-              </Card>
+              </GlassCard>
             </div>
 
             <div>
-              <Card title="AI Recommendations">
+              <GlassCard title="AI Recommendations">
                 <div className="space-y-3">
                   {insightRecommendations.map((rec) => (
                     <div key={rec.id} className="glass-panel rounded-lg p-3">
@@ -107,14 +107,14 @@ const Dashboard = () => {
                     </div>
                   ))}
                 </div>
-              </Card>
+              </GlassCard>
             </div>
           </div>
         </motion.div>
 
         <motion.div variants={itemVariants}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 border-blue-500/20">
+            <GlassCard className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 border-blue-500/20">
               <div className="flex items-center gap-3">
                 <div className="rounded-full bg-blue-500/20 p-3">
                   <TrendingUp className="h-6 w-6 text-blue-400" />
@@ -127,9 +127,9 @@ const Dashboard = () => {
               <button className="mt-4 w-full rounded-lg bg-blue-500/20 py-2 text-blue-400 hover:bg-blue-500/30 transition-colors">
                 Analyze Portfolio
               </button>
-            </Card>
+            </GlassCard>
 
-            <Card className="bg-gradient-to-br from-emerald-900/40 to-cyan-900/40 border-emerald-500/20">
+            <GlassCard className="bg-gradient-to-br from-emerald-900/40 to-cyan-900/40 border-emerald-500/20">
               <div className="flex items-center gap-3">
                 <div className="rounded-full bg-emerald-500/20 p-3">
                   <BriefcaseBusiness className="h-6 w-6 text-emerald-400" />
@@ -142,9 +142,9 @@ const Dashboard = () => {
               <button className="mt-4 w-full rounded-lg bg-emerald-500/20 py-2 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
                 Rebalance Now
               </button>
-            </Card>
+            </GlassCard>
 
-            <Card className="bg-gradient-to-br from-amber-900/40 to-red-900/40 border-amber-500/20">
+            <GlassCard className="bg-gradient-to-br from-amber-900/40 to-red-900/40 border-amber-500/20">
               <div className="flex items-center gap-3">
                 <div className="rounded-full bg-amber-500/20 p-3">
                   <ShieldCheck className="h-6 w-6 text-amber-400" />
@@ -157,7 +157,7 @@ const Dashboard = () => {
               <button className="mt-4 w-full rounded-lg bg-amber-500/20 py-2 text-amber-400 hover:bg-amber-500/30 transition-colors">
                 Optimize Taxes
               </button>
-            </Card>
+            </GlassCard>
           </div>
         </motion.div>
       </motion.div>

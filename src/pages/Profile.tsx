@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Card from "@/components/ui/Card";
+import GlassCard from "@/components/ui/GlassCard";
 import { User, Mail, Lock, Settings, Bell, CreditCard, LogOut, Edit, Wallet, UserPlus, Upload, HelpCircle } from "lucide-react";
 
 const Profile = () => {
@@ -49,7 +48,7 @@ const Profile = () => {
         className="grid grid-cols-1 md:grid-cols-4 gap-6"
       >
         <motion.div variants={itemVariants} className="md:col-span-1">
-          <Card className="relative">
+          <GlassCard className="relative">
             <div className="flex flex-col items-center">
               <div className="relative">
                 <div className="h-20 w-20 rounded-full overflow-hidden bg-secondary flex items-center justify-center relative">
@@ -78,12 +77,12 @@ const Profile = () => {
                 </ul>
               </div>
             </div>
-          </Card>
+          </GlassCard>
         </motion.div>
 
         <motion.div variants={itemVariants} className="md:col-span-3">
           {activeTab === "settings" && (
-            <Card title="Account Settings">
+            <GlassCard title="Account Settings">
               <div className="space-y-6">
                 <div className="space-y-2">
                   <div className="flex flex-col md:flex-row justify-between md:items-center gap-2">
@@ -238,11 +237,11 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </GlassCard>
           )}
 
           {activeTab === "preference" && (
-            <Card title="Preferences">
+            <GlassCard title="Preferences">
               <div className="space-y-6">
                 <div className="space-y-2">
                   <div>
@@ -377,11 +376,11 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </GlassCard>
           )}
 
           {activeTab === "subscription" && (
-            <Card title="Subscription Plan">
+            <GlassCard title="Subscription Plan">
               <div className="space-y-6">
                 <div className="glass-panel rounded-lg p-4">
                   <div className="flex justify-between items-start">
@@ -587,7 +586,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </GlassCard>
           )}
         </motion.div>
       </motion.div>

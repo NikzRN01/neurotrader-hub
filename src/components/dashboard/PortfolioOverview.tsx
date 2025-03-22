@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { ArrowUpRight, ArrowDownRight, TrendingUp, AlertCircle, Wallet } from "lucide-react";
-import Card from "@/components/ui/Card";
+import GlassCard from "@/components/ui/GlassCard";
 import LineChart from "@/components/ui/LineChart";
 import { mockPortfolioData, sampleChartData } from "@/utils/mockData";
 
@@ -45,7 +45,7 @@ const PortfolioOverview = () => {
       </div>
 
       {/* Portfolio Value and Chart */}
-      <Card className="relative overflow-hidden">
+      <GlassCard className="relative overflow-hidden">
         <div className="z-10 mb-6 flex flex-col md:flex-row md:items-end justify-between">
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Total Portfolio Value</h3>
@@ -79,12 +79,12 @@ const PortfolioOverview = () => {
         </div>
 
         <LineChart data={sampleChartData} showTimeFrames={true} />
-      </Card>
+      </GlassCard>
 
       {/* Account Types */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {mockPortfolioData.accountTypes.map((account) => (
-          <Card key={account.name} className="relative overflow-hidden">
+          <GlassCard key={account.name} className="relative overflow-hidden">
             <div className="mb-3 flex items-center gap-2">
               <Wallet className="h-5 w-5 text-muted-foreground" />
               <h3 className="font-medium">{account.name} Account</h3>
@@ -109,7 +109,7 @@ const PortfolioOverview = () => {
                 <div className="absolute bottom-0 right-0 h-14 w-14 rounded-full bg-blue-500/10"></div>
               </div>
             </div>
-          </Card>
+          </GlassCard>
         ))}
       </div>
     </div>

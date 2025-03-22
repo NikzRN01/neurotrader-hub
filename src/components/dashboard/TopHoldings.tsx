@@ -1,11 +1,11 @@
 
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
-import Card from "@/components/ui/Card";
+import GlassCard from "@/components/ui/GlassCard";
 import { mockPortfolioData } from "@/utils/mockData";
 
 const TopHoldings = () => {
   return (
-    <Card title="Top Holdings" className="h-full">
+    <GlassCard title="Top Holdings" className="h-full">
       <div className="space-y-4">
         {mockPortfolioData.topHoldings.map((holding) => (
           <div key={holding.symbol} className="flex justify-between items-center">
@@ -38,7 +38,7 @@ const TopHoldings = () => {
           </div>
         ))}
       </div>
-    </Card>
+    </GlassCard>
   );
 };
 
