@@ -1,5 +1,9 @@
-import { useLocation } from "react-router-dom";
+
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
+import Card from "@/components/ui/Card";
+import { Home, AlertTriangle } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
@@ -12,14 +16,32 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
-        </a>
-      </div>
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className="w-full max-w-md mx-auto text-center py-10 px-6">
+          <div className="mb-6 flex justify-center">
+            <div className="h-20 w-20 rounded-full bg-destructive/10 flex items-center justify-center">
+              <AlertTriangle className="h-10 w-10 text-destructive" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold mb-2 text-gradient">404</h1>
+          <p className="text-xl font-medium mb-6">Page Not Found</p>
+          <p className="text-muted-foreground mb-8">
+            The page you're looking for doesn't exist or has been moved.
+          </p>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+          >
+            <Home className="h-4 w-4" />
+            <span>Return to Dashboard</span>
+          </Link>
+        </Card>
+      </motion.div>
     </div>
   );
 };
