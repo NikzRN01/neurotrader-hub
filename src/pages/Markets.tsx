@@ -201,19 +201,19 @@ const Markets = () => {
                   <label className="block text-xs text-muted-foreground mb-1">Market Cap</label>
                   <select className="w-full bg-secondary rounded-lg px-3 py-2 text-sm">
                     <option>Any</option>
-                    <option>Small Cap (< $2B)</option>
+                    <option>Small Cap (&lt; $2B)</option>
                     <option>Mid Cap ($2B - $10B)</option>
-                    <option>Large Cap (> $10B)</option>
+                    <option>Large Cap (&gt; $10B)</option>
                   </select>
                 </div>
                 <div className="flex-1">
                   <label className="block text-xs text-muted-foreground mb-1">P/E Ratio</label>
                   <select className="w-full bg-secondary rounded-lg px-3 py-2 text-sm">
                     <option>Any</option>
-                    <option>< 10</option>
+                    <option>&lt; 10</option>
                     <option>10 - 20</option>
                     <option>20 - 50</option>
-                    <option>> 50</option>
+                    <option>&gt; 50</option>
                   </select>
                 </div>
                 <div className="flex-1">
@@ -230,13 +230,14 @@ const Markets = () => {
                   <label className="block text-xs text-muted-foreground mb-1">Dividend Yield</label>
                   <select className="w-full bg-secondary rounded-lg px-3 py-2 text-sm">
                     <option>Any</option>
-                    <option>< 1%</option>
+                    <option>&lt; 1%</option>
                     <option>1% - 3%</option>
                     <option>3% - 5%</option>
-                    <option>> 5%</option>
+                    <option>&gt; 5%</option>
                   </select>
                 </div>
               </div>
+              
               <div className="mt-3">
                 <button className="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm">
                   Apply Filters
