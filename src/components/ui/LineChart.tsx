@@ -5,6 +5,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 interface LineChartProps {
   data: { name: string; value: number }[];
   height?: number;
+  showTimeFrames?: boolean;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -21,7 +22,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-const LineChart = ({ data, height = 200 }: LineChartProps) => {
+const LineChart = ({ data, height = 200, showTimeFrames = true }: LineChartProps) => {
   const [activeTimeFrame, setActiveTimeFrame] = useState<string>("7 Days");
   const [chartData, setChartData] = useState(data || []);
 
@@ -45,26 +46,28 @@ const LineChart = ({ data, height = 200 }: LineChartProps) => {
 
   return (
     <div className="w-full">
-      <div className="mb-4 flex justify-end space-x-2">
-        <button
-          onClick={() => setActiveTimeFrame("7 Days")}
-          className={timeFrameClass("7 Days")}
-        >
-          7 Days
-        </button>
-        <button
-          onClick={() => setActiveTimeFrame("14 Days")}
-          className={timeFrameClass("14 Days")}
-        >
-          14 Days
-        </button>
-        <button
-          onClick={() => setActiveTimeFrame("30 Days")}
-          className={timeFrameClass("30 Days")}
-        >
-          30 Days
-        </button>
-      </div>
+      {showTimeFrames && (
+        <div className="mb-4 flex justify-end space-x-2">
+          <button
+            onClick={() => setActiveTimeFrame("7 Days")}
+            className={timeFrameClass("7 Days")}
+          >
+            7 Days
+          </button>
+          <button
+            onClick={() => setActiveTimeFrame("14 Days")}
+            className={timeFrameClass("14 Days")}
+          >
+            14 Days
+          </button>
+          <button
+            onClick={() => setActiveTimeFrame("30 Days")}
+            className={timeFrameClass("30 Days")}
+          >
+            30 Days
+          </button>
+        </div>
+      )}
       <div className="chart-container h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           {chartData.length > 0 ? (
