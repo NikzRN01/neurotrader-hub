@@ -4,10 +4,37 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, ArrowDownRight, Clock, Percent, DollarSign, BarChart3 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import LineChart from "@/components/ui/LineChart";
-import { mockPortfolioData, sampleChartData } from "@/utils/mockData";
 
-const PortfolioSummary = () => {
+interface PortfolioSummaryProps {
+  portfolioData: any;
+}
+
+const PortfolioSummary = ({ portfolioData }: PortfolioSummaryProps) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<string>("7 Days");
+
+  // Default empty data for when the portfolio data is not loaded yet
+  const defaultData = {
+    totalValue: 0,
+    totalGrowth: 0,
+    totalGrowthPercentage: 0,
+    investmentPeriod: "0 Years",
+    avgAnnualReturn: "0%",
+    totalInvested: 0,
+    riskLevel: "Low",
+    chartData: []
+  };
+
+  // Use portfolio data if available, otherwise use default empty data
+  const {
+    totalValue = 0,
+    totalGrowth = 0,
+    totalGrowthPercentage = 0,
+    investmentPeriod = "0 Years",
+    avgAnnualReturn = "0%",
+    totalInvested = 0,
+    riskLevel = "Low",
+    chartData = []
+  } = portfolioData || defaultData;
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -32,16 +59,16 @@ const PortfolioSummary = () => {
                 <p className="text-sm text-muted-foreground">Total Value</p>
                 <div className="flex items-end gap-2">
                   <span className="text-3xl font-bold">
-                    ${mockPortfolioData.totalValue.toLocaleString("en-US")}
+                    ${totalValue.toLocaleString("en-US")}
                   </span>
-                  <div className={`flex items-center ${mockPortfolioData.totalGrowth >= 0 ? 'text-success' : 'text-destructive'}`}>
-                    {mockPortfolioData.totalGrowth >= 0 ? (
+                  <div className={`flex items-center ${totalGrowth >= 0 ? 'text-success' : 'text-destructive'}`}>
+                    {totalGrowth >= 0 ? (
                       <ArrowUpRight className="h-4 w-4" />
                     ) : (
                       <ArrowDownRight className="h-4 w-4" />
                     )}
                     <span className="text-sm font-medium">
-                      {mockPortfolioData.totalGrowthPercentage.toFixed(2)}%
+                      {totalGrowthPercentage.toFixed(2)}%
                     </span>
                   </div>
                 </div>
@@ -53,28 +80,28 @@ const PortfolioSummary = () => {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                     <p className="text-xs text-muted-foreground">Investment Period</p>
                   </div>
-                  <p className="text-lg font-medium">2.5 Years</p>
+                  <p className="text-lg font-medium">{investmentPeriod}</p>
                 </div>
                 <div className="glass-panel rounded-lg p-3">
                   <div className="flex items-center gap-2 mb-1">
                     <Percent className="h-4 w-4 text-muted-foreground" />
                     <p className="text-xs text-muted-foreground">Avg. Annual Return</p>
                   </div>
-                  <p className="text-lg font-medium text-success">+12.4%</p>
+                  <p className="text-lg font-medium text-success">{avgAnnualReturn}</p>
                 </div>
                 <div className="glass-panel rounded-lg p-3">
                   <div className="flex items-center gap-2 mb-1">
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                     <p className="text-xs text-muted-foreground">Total Invested</p>
                   </div>
-                  <p className="text-lg font-medium">$102,500</p>
+                  <p className="text-lg font-medium">${totalInvested.toLocaleString()}</p>
                 </div>
                 <div className="glass-panel rounded-lg p-3">
                   <div className="flex items-center gap-2 mb-1">
                     <BarChart3 className="h-4 w-4 text-muted-foreground" />
                     <p className="text-xs text-muted-foreground">Risk Level</p>
                   </div>
-                  <p className="text-lg font-medium">{mockPortfolioData.riskLevel}</p>
+                  <p className="text-lg font-medium">{riskLevel}</p>
                 </div>
               </div>
             </div>
@@ -104,7 +131,7 @@ const PortfolioSummary = () => {
                 </button>
               </div>
             </div>
-            <LineChart data={sampleChartData} showTimeFrames={false} />
+            <LineChart data={chartData} showTimeFrames={false} />
           </div>
         </div>
       </GlassCard>

@@ -78,6 +78,15 @@ export const portfolioApi = {
         "User-ID": userId.toString(),
       }
     }),
+    
+  uploadPortfolio: (userId: number, portfolioData: any) =>
+    fetchWithErrorHandling("/portfolio", {
+      method: "POST",
+      body: JSON.stringify({ 
+        user_id: userId,
+        portfolio_data: portfolioData 
+      }),
+    }),
 };
 
 // Tax Liability API
