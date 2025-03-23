@@ -48,7 +48,7 @@ const Portfolio = () => {
           <div className="flex items-center gap-3">
             <button className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/80 transition-colors">
               <Filter className="h-4 w-4" />
-              <span className="text-sm">Filter</span>
+          
             </button>
             <button className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/80 transition-colors">
               <Download className="h-4 w-4" />
@@ -103,7 +103,7 @@ const Portfolio = () => {
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                         <p className="text-xs text-muted-foreground">Total Invested</p>
                       </div>
-                      <p className="text-lg font-medium">$102,500</p>
+                      <p className="text-lg font-medium">$110,000</p>
                     </div>
                     <div className="glass-panel rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">

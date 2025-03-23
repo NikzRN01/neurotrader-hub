@@ -7,17 +7,17 @@ import LineChart from "@/components/ui/LineChart";
 const PortfolioOverview = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<string>("7 Days");
   const [portfolioData, setPortfolioData] = useState({
-    totalValue: 0,
-    totalGrowth: 0,
-    totalGrowthPercentage: 0,
+    totalValue: 125630.45,
+    totalGrowth: 11800,
+    totalGrowthPercentage: 12.4,
     riskLevel: "Low",
   });
   const [chartData, setChartData] = useState<{ name: string; value: number }[]>([]);
   const [investmentTypes, setInvestmentTypes] = useState([
-    { name: "Stock Investments", value: 0, growth: 0, icon: "📈" },
-    { name: "Mutual Funds", value: 0, growth: 0, icon: "📊" },
-    { name: "Crypto Account", value: 0, growth: 0, icon: "🪙" },
-    { name: "Gold Investments", value: 0, growth: 0, icon: "🪙" },
+    { name: "Stock Investments", value: 26000, growth: 2889, icon: "📈" },
+    { name: "Mutual Funds", value: 28000, growth: 2996, icon: "📊" },
+    { name: "Crypto Account", value: 25000, growth: 2447, icon: "🪙" },
+    { name: "Gold Investments", value: 29000, growth: 2899, icon: "🪙" },
   ]);
 
   useEffect(() => {
