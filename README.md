@@ -2,6 +2,8 @@
 
 **Use your preferred IDE**
 
+NeuroTradeX : https://neurotradex.vercel.app/
+
 If you want to work locally using your own IDE, you can clone this repo and push changes.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
@@ -42,6 +44,10 @@ This project is built with :
 - Vite
 - TypeScript
 - React
-- shadcn-ui
+- Shadcn-ui
 - Tailwind CSS
-
+- Flask
+- SQLALchemy
+- Gemini 2.0 API
+- Panda
+- yfinance
