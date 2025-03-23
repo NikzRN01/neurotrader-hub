@@ -23,7 +23,7 @@ const Footer = () => {
           </Link>
         </div>
         <div className="text-sm text-muted-foreground">
-          Made with ❤️ by Libert-T
+          © 2025 NeuroTradeX. All rights reserved.
         </div>
       </div>
     </footer>
