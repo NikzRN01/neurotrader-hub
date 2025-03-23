@@ -126,32 +126,32 @@ const Dashboard = () => {
 
         <motion.div variants={itemVariants}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <GlassCard className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 dark:from-emerald-900/40 dark:to-emerald-800/40 dark:border-emerald-700/20">
+            <GlassCard className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 border-blue-500/20">
               <div className="flex items-center gap-3">
-                <div className="rounded-full bg-emerald-500/20 p-3">
-                  <TrendingUp className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <div className="rounded-full bg-blue-500/20 p-3">
+                  <TrendingUp className="h-6 w-6 text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-emerald-800 dark:text-emerald-300">Smart Analysis</h3>
-                  <p className="text-sm text-emerald-700/70 dark:text-emerald-400/70">Get AI-powered insights on your portfolio</p>
+                  <h3 className="text-lg font-medium">Smart Analysis</h3>
+                  <p className="text-sm text-muted-foreground">Get AI-powered insights on your portfolio</p>
                 </div>
               </div>
-              <Link to="/insights" className="mt-4 w-full rounded-lg py-2 block text-center bg-emerald-500 text-white hover:bg-emerald-600 transition-colors">
+              <Link to="/insights" className="mt-4 w-full rounded-lg bg-blue-500/20 py-2 text-blue-400 hover:bg-blue-500/30 transition-colors block text-center">
                 Analyze Portfolio
               </Link>
             </GlassCard>
 
-            <GlassCard className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200 dark:from-amber-900/40 dark:to-amber-800/40 dark:border-amber-700/20">
+            <GlassCard className="bg-gradient-to-br from-amber-900/40 to-red-900/40 border-amber-500/20">
               <div className="flex items-center gap-3">
                 <div className="rounded-full bg-amber-500/20 p-3">
-                  <ShieldCheck className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+                  <ShieldCheck className="h-6 w-6 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-amber-800 dark:text-amber-300">Tax Optimization</h3>
-                  <p className="text-sm text-amber-700/70 dark:text-amber-400/70">Find tax-saving opportunities</p>
+                  <h3 className="text-lg font-medium">Tax Optimization</h3>
+                  <p className="text-sm text-muted-foreground">Find tax-saving opportunities</p>
                 </div>
               </div>
-              <Link to="/tax-optimization" className="mt-4 w-full rounded-lg py-2 block text-center bg-amber-500 text-white hover:bg-amber-600 transition-colors">
+              <Link to="/tax-optimization" className="mt-4 w-full rounded-lg bg-amber-500/20 py-2 text-amber-400 hover:bg-amber-500/30 transition-colors block text-center">
                 Optimize Taxes
               </Link>
             </GlassCard>
