@@ -70,6 +70,14 @@ export const portfolioApi = {
       method: "POST",
       body: JSON.stringify({ tickers, start_date: startDate, end_date: endDate }),
     }),
+  
+  fetchPortfolioData: (userId: number) =>
+    fetchWithErrorHandling("/portfolio", {
+      method: "GET",
+      headers: {
+        "User-ID": userId.toString(),
+      }
+    }),
 };
 
 // Tax Liability API
@@ -88,6 +96,11 @@ export const marketApi = {
       method: "POST",
       body: JSON.stringify({ market_type: marketType, symbol, exchange }),
     }),
+    
+  fetchAllMarketData: () =>
+    fetchWithErrorHandling("/market-data", {
+      method: "GET",
+    }),
 };
 
 // Future Prediction API
@@ -101,5 +114,14 @@ export const predictionApi = {
         future_days: futureDays,
         initial_investment: initialInvestment
       }),
+    }),
+};
+
+// Insights API
+export const insightsApi = {
+  getStockInsights: (symbols: string[], intervals: number[]) =>
+    fetchWithErrorHandling("/insights", {
+      method: "POST",
+      body: JSON.stringify({ symbols, intervals }),
     }),
 };

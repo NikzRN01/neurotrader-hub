@@ -1,12 +1,46 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowUpRight, ArrowDownRight, TrendingUp, AlertCircle } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import LineChart from "@/components/ui/LineChart";
-import { mockPortfolioData, sampleChartData } from "@/utils/mockData";
 
 const PortfolioOverview = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<string>("7 Days");
+  const [portfolioData, setPortfolioData] = useState({
+    totalValue: 0,
+    totalGrowth: 0,
+    totalGrowthPercentage: 0,
+    riskLevel: "Low",
+  });
+  const [chartData, setChartData] = useState<{ name: string; value: number }[]>([]);
+  const [investmentTypes, setInvestmentTypes] = useState([
+    { name: "Stock Investments", value: 0, growth: 0, icon: "📈" },
+    { name: "Mutual Funds", value: 0, growth: 0, icon: "📊" },
+    { name: "Crypto Account", value: 0, growth: 0, icon: "🪙" },
+    { name: "Gold Investments", value: 0, growth: 0, icon: "🪙" },
+  ]);
+
+  useEffect(() => {
+    // This would be replaced with actual API calls to fetch user data
+    const fetchUserData = async () => {
+      try {
+        // Fetch from Supabase or your API
+        // For now, we leave it at zero values
+        
+        // Example of chart data structure (empty for now)
+        const emptyChartData = Array(7).fill(0).map((_, i) => ({
+          name: `Day ${i + 1}`,
+          value: 0
+        }));
+        
+        setChartData(emptyChartData);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+    
+    fetchUserData();
+  }, []);
 
   const timeRangeClass = (range: string) =>
     `px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
@@ -14,13 +48,6 @@ const PortfolioOverview = () => {
         ? "bg-primary/10 text-primary"
         : "bg-secondary text-muted-foreground hover:bg-secondary/80"
     }`;
-
-  const investmentTypes = [
-    { name: "Stock Investments", value: 82500, growth: 4200, icon: "📈" },
-    { name: "Mutual Funds", value: 45000, growth: 1500, icon: "📊" },
-    { name: "Crypto Account", value: 15000, growth: -1200, icon: "🪙" },
-    { name: "Gold Investments", value: 7500, growth: 300, icon: "🪙" },
-  ];
 
   return (
     <div className="space-y-6">
@@ -41,16 +68,16 @@ const PortfolioOverview = () => {
             <h3 className="text-sm font-medium text-muted-foreground">Total Portfolio Value</h3>
             <div className="mt-1 flex items-end gap-2">
               <span className="text-3xl font-bold">
-                ${mockPortfolioData.totalValue.toLocaleString("en-US")}
+                ${portfolioData.totalValue.toLocaleString("en-US")}
               </span>
-              <div className={`flex items-center ${mockPortfolioData.totalGrowth >= 0 ? 'text-success' : 'text-destructive'}`}>
-                {mockPortfolioData.totalGrowth >= 0 ? (
+              <div className={`flex items-center ${portfolioData.totalGrowth >= 0 ? 'text-success' : 'text-destructive'}`}>
+                {portfolioData.totalGrowth >= 0 ? (
                   <ArrowUpRight className="h-4 w-4" />
                 ) : (
                   <ArrowDownRight className="h-4 w-4" />
                 )}
                 <span className="text-sm font-medium">
-                  {mockPortfolioData.totalGrowthPercentage.toFixed(2)}%
+                  {portfolioData.totalGrowthPercentage.toFixed(2)}%
                 </span>
               </div>
             </div>
@@ -59,7 +86,7 @@ const PortfolioOverview = () => {
           <div className="mt-4 md:mt-0 flex items-center gap-4">
             <div className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-success" />
-              <span className="text-sm text-muted-foreground">Risk: {mockPortfolioData.riskLevel}</span>
+              <span className="text-sm text-muted-foreground">Risk: {portfolioData.riskLevel}</span>
             </div>
             <button className="flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-xs">
               <AlertCircle className="h-3 w-3" />
@@ -89,7 +116,7 @@ const PortfolioOverview = () => {
           </button>
         </div>
 
-        <LineChart data={sampleChartData} showTimeFrames={false} />
+        <LineChart data={chartData} />
       </GlassCard>
 
       {/* Investment Types */}
