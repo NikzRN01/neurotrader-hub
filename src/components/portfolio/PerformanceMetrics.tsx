@@ -2,7 +2,11 @@
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
 
-const PerformanceMetrics = () => {
+interface PerformanceMetricsProps {
+  portfolioData?: any;
+}
+
+const PerformanceMetrics = ({ portfolioData }: PerformanceMetricsProps) => {
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.4 } }

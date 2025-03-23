@@ -3,11 +3,18 @@ import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import { mockPortfolioData } from "@/utils/mockData";
 
-const TopHoldings = () => {
+interface TopHoldingsProps {
+  portfolioData?: any;
+}
+
+const TopHoldings = ({ portfolioData }: TopHoldingsProps) => {
+  // Use provided portfolioData or fallback to mockData
+  const holdings = portfolioData?.topHoldings || mockPortfolioData.topHoldings;
+  
   return (
     <GlassCard title="Top Holdings" className="h-full">
       <div className="space-y-4">
-        {mockPortfolioData.topHoldings.map((holding) => (
+        {holdings.map((holding) => (
           <div key={holding.symbol} className="flex justify-between items-center">
             <div>
               <div className="flex items-center gap-2">
