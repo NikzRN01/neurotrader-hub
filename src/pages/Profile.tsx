@@ -98,7 +98,7 @@ const Profile = () => {
             <div className="flex flex-col items-center">
               <div className="relative">
                 <div className="h-20 w-20 rounded-full overflow-hidden bg-secondary flex items-center justify-center relative">
-                  <span className="text-2xl font-semibold text-foreground">SJ</span>
+                  <span className="text-2xl font-semibold text-foreground">NN</span>
                   <div className="absolute inset-0 bg-gradient-radial from-blue-600/20 to-blue-800/40"></div>
                 </div>
                 <button className="absolute -right-1 -bottom-1 rounded-full p-1 bg-secondary text-primary">
