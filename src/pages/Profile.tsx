@@ -105,7 +105,7 @@ const Profile = () => {
                   <Edit className="h-3 w-3" />
                 </button>
               </div>
-              <h2 className="mt-3 text-lg font-medium">Sarah Johnson</h2>
+              <h2 className="mt-3 text-lg font-medium">Nikhil Naraniya</h2>
               <p className="text-sm text-muted-foreground">Premium Member</p>
               <div className="w-full border-t border-border mt-4 pt-4">
                 <ul className="space-y-1">
@@ -148,7 +148,7 @@ const Profile = () => {
                           <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <input
                             type="text"
-                            defaultValue="Sarah Johnson"
+                            defaultValue="Nikhil Naraniya"
                             className="w-full bg-secondary py-2 pl-10 pr-4 rounded-lg text-sm"
                           />
                         </div>
@@ -159,7 +159,7 @@ const Profile = () => {
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <input
                             type="email"
-                            defaultValue="sarah.johnson@example.com"
+                            defaultValue="nikznaraniya@gmail.com"
                             className="w-full bg-secondary py-2 pl-10 pr-4 rounded-lg text-sm"
                           />
                         </div>
@@ -168,18 +168,18 @@ const Profile = () => {
                         <label className="block text-sm text-muted-foreground mb-1">Phone Number</label>
                         <input
                           type="tel"
-                          defaultValue="+1 (555) 123-4567"
+                          defaultValue="+91 94276 20852"
                           className="w-full bg-secondary py-2 px-4 rounded-lg text-sm"
                         />
                       </div>
                       <div>
                         <label className="block text-sm text-muted-foreground mb-1">Country</label>
                         <select className="w-full bg-secondary py-2 px-4 rounded-lg text-sm">
+                          <option>India</option>
                           <option>United States</option>
                           <option>Canada</option>
                           <option>United Kingdom</option>
                           <option>Australia</option>
-                          <option>India</option>
                         </select>
                       </div>
                     </div>
